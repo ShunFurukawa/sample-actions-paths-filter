@@ -95,3 +95,15 @@ jobs:
         run: |
           echo "Configuration files have changed!"
           echo "Running config validation tasks..."
+
+  # 適当に全体で実行したいjobのサンプルを記述する
+  always-run-job:
+    runs-on: ubuntu-latest
+    # 適当に全体で実行したいjobのサンプルを記述する
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Config changes detected
+        run: |
+          echo "Running always run jobs..."
