@@ -41,15 +41,7 @@ jobs:
   frontend-job:
     needs: detect-changes
     if: needs.detect-changes.outputs.frontend == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Frontend changes detected
-        run: |
-          echo "Frontend files have changed!"
-          echo "Running frontend-specific tasks..."
+    uses: ./.github/workflows/frontend-job.yml
 
   backend-job:
     needs: detect-changes
