@@ -1,12 +1,6 @@
 name: Paths Filter Test
 
-on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+on: pull_request
 
 jobs:
   detect-changes:
@@ -21,14 +15,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Detect changed paths
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         id: filter
         with:
           filters: |
             frontend:
               - 'frontend/**'
             backend:
-              - 'backend/**'
+              - 'backend/internal/hoge/**'
             docs:
               - 'docs/**'
               - '*.md'
@@ -47,15 +41,7 @@ jobs:
   frontend-job:
     needs: detect-changes
     if: needs.detect-changes.outputs.frontend == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Frontend changes detected
-        run: |
-          echo "Frontend files have changed!"
-          echo "Running frontend-specific tasks..."
+    uses: ./.github/workflows/frontend-job.yml
 
   backend-job:
     needs: detect-changes

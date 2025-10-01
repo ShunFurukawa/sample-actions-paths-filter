@@ -1,0 +1,18 @@
+name: Frontend Jobs
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  frontend-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Frontend changes detected
+        run: |
+          echo "Frontend files have changed!"
+          echo "Running frontend-specific tasks..."
