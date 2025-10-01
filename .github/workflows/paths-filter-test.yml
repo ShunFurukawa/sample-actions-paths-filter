@@ -52,6 +52,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug path filter results
+        run: |
+          echo "Backend changes detected: ${{ needs.detect-changes.outputs.backend }}"
+
       - name: Backend changes detected
         run: |
           echo "Backend files have changed!"
