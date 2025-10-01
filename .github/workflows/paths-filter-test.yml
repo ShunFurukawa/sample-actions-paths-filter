@@ -1,0 +1,97 @@
+name: Paths Filter Test
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+      docs: ${{ steps.filter.outputs.docs }}
+      config: ${{ steps.filter.outputs.config }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect changed paths
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+            config:
+              - '.github/**'
+              - '*.yml'
+              - '*.yaml'
+
+      - name: Print filter results
+        run: |
+          echo "Frontend changed: ${{ steps.filter.outputs.frontend }}"
+          echo "Backend changed: ${{ steps.filter.outputs.backend }}"
+          echo "Docs changed: ${{ steps.filter.outputs.docs }}"
+          echo "Config changed: ${{ steps.filter.outputs.config }}"
+
+  frontend-job:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Frontend changes detected
+        run: |
+          echo "Frontend files have changed!"
+          echo "Running frontend-specific tasks..."
+
+  backend-job:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Backend changes detected
+        run: |
+          echo "Backend files have changed!"
+          echo "Running backend-specific tasks..."
+
+  docs-job:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docs changes detected
+        run: |
+          echo "Documentation files have changed!"
+          echo "Running documentation-specific tasks..."
+
+  config-job:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.config == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Config changes detected
+        run: |
+          echo "Configuration files have changed!"
+          echo "Running config validation tasks..."
