@@ -23,6 +23,7 @@ jobs:
               - 'frontend/**'
             backend:
               - 'backend/internal/hoge/**'
+              - '!backend/internal/hoge/foo/**'
             docs:
               - 'docs/**'
               - '*.md'
