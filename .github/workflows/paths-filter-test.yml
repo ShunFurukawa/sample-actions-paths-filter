@@ -18,10 +18,12 @@ jobs:
         uses: dorny/paths-filter@v3
         id: filter
         with:
+          predicate-quantifier: 'some'
           filters: |
             frontend:
               - 'frontend/**'
             backend:
+              - 'backend/internal/hoge/**'
               - '!backend/internal/hoge/foo/**'
             docs:
               - 'docs/**'
